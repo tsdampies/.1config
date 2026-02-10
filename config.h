@@ -1,6 +1,5 @@
 // TSDAMPIES --- DWM CONFIGURATION FILE ---
 /*
-sudo nano /etc/systemd/logind.conf
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 //Touchpad
@@ -35,7 +34,7 @@ sudo systemctl mask hibernate.target
 sudo systemctl mask hybrid-sleep.target
 
 //enable sleep 
-sudo vim /etc/systemd/logind.conf
+/etc/systemd/logind.conf
 
 //firewall
 sudo pacman -S ufw
@@ -128,14 +127,18 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] =		{ "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = 	{ "terminator", NULL };
-static const char *ranger[]  =	 	{ "terminator", "-e", "ranger", NULL };
+static const char *termcmd[]  = 	{ "kitty", NULL };
+static const char *ranger[]  =	 	{ "kitty", "-e", "ranger", NULL };
 static const char *volumeup[]      = { "/usr/bin/amixer",  "set", "Master", "5%+", NULL };
 static const char *volumedown[]    = { "/usr/bin/amixer",  "set", "Master", "5%-", NULL };
 static const char *volumemute[]    = { "/usr/bin/amixerl", "set", "Master", "toggle", NULL };
 static const char *brightnessup[] =	{ "brightnessctl", "set", "10%+", NULL };
 static const char *brightnessdown[] =	{ "brightnessctl", "set", "10%-", NULL };
-static const char *filemanager[] = 	{ "dolphin" , NULL };
+static const char *filemanager[] = 	{ "thunar" , NULL };
+static const char *suspend[] = 	{ "kitty", "-e", "sudo", "systemctl", "suspend", NULL };
+static const char *reboot[] = 	{ "kitty", "-e", "sudo", "reboot", "now", NULL };
+static const char *shutdown[] = 	{ "kitty", "-e", "sudo", "systemctl", "poweroff", NULL };
+
 
 
 static const Key keys[] = {
@@ -169,15 +172,15 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_o,      quit,           {0} },
 	{ MODKEY,			XK_e,	spawn,	{.v = filemanager } },
 	{ MODKEY,                       XK_y,      spawn,          {.v = ranger } },
-	{ MODKEY|ShiftMask,    		XK_g,	spawn,		SHCMD("sleep 1 && systemctl suspend") },
-	{ MODKEY|ShiftMask,		XK_u,	spawn,          SHCMD("shutdown -r now") },
-	{ MODKEY|ShiftMask,  		XK_n,	spawn,		SHCMD("poweroff")},
+	{ MODKEY|ShiftMask,    		XK_g,	spawn,		{.v = suspend } },
+	{ MODKEY|ShiftMask,		XK_u,	spawn,          {.v = reboot } },
+	{ MODKEY|ShiftMask,  		XK_n,	spawn,		{.v = shutdown } },
 	{ MODKEY,	  		XK_p,	spawn,		SHCMD("xrandr --auto")},
 	{ MODKEY,	  		XK_r,	spawn,		SHCMD("j4-dmenu-desktop") },
 	{ MODKEY|ControlMask,		XK_q,	spawn,		SHCMD("redshift -P -O 4600") },
 	{ MODKEY,			XK_q,	spawn,		SHCMD("redshift -P -O 3600") },
-	{ MODKEY|ControlMask,		XK_w,	spawn,		SHCMD("vibrant-cli eDP-1 1") },
-	{ MODKEY,			XK_w,	spawn,		SHCMD("vibrant-cli eDP-1 0") },
+	{ MODKEY|ControlMask,		XK_w,	spawn,		SHCMD("vibrant-cli DVI-I-1 1") },
+	{ MODKEY,			XK_w,	spawn,		SHCMD("vibrant-cli DVI-I-1 0") },
 	{ 0,            		XF86XK_AudioRaiseVolume, 	spawn,	{.v = volumeup } },
 	{ 0,				XF86XK_AudioLowerVolume, 	spawn,	{.v = volumedown } },
 	{ 0,				XF86XK_AudioMute, 		spawn,	{.v = volumemute } },
