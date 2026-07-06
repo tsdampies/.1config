@@ -35,11 +35,30 @@ if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 fi	
 
 
+//Fix Pipewire-Wireplumber (Arch)
+sudo mkdir -p /etc/wireplumber/wireplumber.conf.d/
+sudo nvim /etc/wireplumber/wireplumber.conf.d/disable-suspend.conf
+systemctl --user restart wireplumber
+
+monitor.alsa.rules = [
+  {
+    matches = [
+      { node.name = "~alsa_output.*" }
+    ]
+    actions = {
+      update-props = {
+        session.suspend-timeout-seconds = 0
+      }
+    }
+  }
+]
 
 
-xset dpms 900 900 900
-sudo systemctl mask hibernate.target
-sudo systemctl mask hybrid-sleep.target
+//Fix Dialog Browser Popup (Arch)
+systemctl --user import-environment DISPLAY XAUTHORITY WAYLAND_DISPLAY
+
+//Fix Filemanager Slow Startup (Debian)
+sudo apt purge xdg-desktop-portal
 
 //enable sleep 
 /etc/systemd/logind.conf
@@ -67,10 +86,7 @@ enabled = true
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
-//tlp
-/etc/default/tlp
-WIFI_PWR_ON_AC=off
-WIFI_PWR_ON_BAT=off
+
 */
 
 #include <X11/XF86keysym.h>
@@ -151,7 +167,7 @@ static const char *shutdown[] = { "alacritty", "-e", "sudo", "systemctl", "power
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,			XK_e,      spawn,	{.v = filemanager } },
+	{ MODKEY,			XK_e,      spawn,          {.v = filemanager } },
 	{ MODKEY,	  		XK_r,	   spawn,	SHCMD("j4-dmenu-desktop") },
 	{ MODKEY,	                XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_y,      spawn,          {.v = dmenucmd } },
@@ -160,6 +176,8 @@ static const Key keys[] = {
 	{ MODKEY,                     XK_z,      focusstack,     {.i = +1 } },
 	{ MODKEY,                     XK_x,      focusstack,     {.i = -1 } },
 	{ MODKEY,	  		XK_i,	   spawn,	SHCMD("j4-dmenu-desktop") },
+	{ MODKEY,	                XK_k,      spawn,          {.v = termcmd } },
+	{ MODKEY,	                XK_l,      spawn,          {.v = filemanager } },
 	{ MODKEY,                     XK_comma,      focusstack,     {.i = +1 } },
 	{ MODKEY,                     XK_period,      focusstack,     {.i = +1 } },
 	{ MODKEY,			XK_7,      incnmaster,     {.i = +1 } },
