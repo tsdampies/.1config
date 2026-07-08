@@ -53,6 +53,16 @@ monitor.alsa.rules = [
   }
 ]
 
+OR
+
+sudo vim /etc/tlp.conf
+SOUND_POWER_SAVE_ON_AC=0
+SOUND_POWER_SAVE_ON_BAT=0
+restart
+
+sudo nvim /etc/modprobe.d/audio-power-save.conf
+options snd_hda_intel power_save=0
+
 
 //Fix Dialog Browser Popup (Arch)
 systemctl --user import-environment DISPLAY XAUTHORITY WAYLAND_DISPLAY
@@ -98,11 +108,11 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#384252";
+static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#384252";
+static const char col_cyan[]        = "#222222";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
