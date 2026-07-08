@@ -7,7 +7,7 @@ picom -b
 while true; do
     BATT=$(cat /sys/class/power_supply/BAT1/capacity)
     DATE=$(date +"%R")
-    xsetroot -name "${DATE} | ${BATT}% "
+    xsetroot -name " ${DATE} | ${BATT}% "
     sleep 1m
 done &
 
